@@ -1,0 +1,17 @@
+# Local AI collaboration settings
+/.codex/
+/AGENTS.md
+/docs/AI_COLLABORATION.md
+/docs/DEVELOPMENT_GUIDELINES.md
+
+# Local TIL drafts
+/docs/til/
+
+# Local portfolio drafts
+/docs/PORTFOLIO_NOTES.md
+
+# Local personal notes
+/docs/local-notes/
+
+# Local AI helper scripts
+/scripts/local/
