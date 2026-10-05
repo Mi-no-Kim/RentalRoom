@@ -40,11 +40,13 @@ cd backend
 
 백엔드의 기본 datasource 설정은 로컬 PostgreSQL을 사용합니다. 주소가 다른 경우 `DB_HOST` 환경 변수도 함께 설정합니다.
 
-현재 애플리케이션 컨텍스트 테스트도 PostgreSQL에 연결하므로 컨테이너가 `healthy` 상태인 것을 확인한 뒤 실행합니다.
+테스트는 Testcontainers가 별도의 PostgreSQL 18.6 컨테이너를 자동으로 시작하고 종료합니다. Docker Desktop은 실행 중이어야 하지만 로컬 Compose PostgreSQL을 미리 시작할 필요는 없습니다.
 
 ```powershell
 .\gradlew.bat test
 ```
+
+처음 실행할 때는 PostgreSQL 이미지와 테스트 의존성을 내려받기 때문에 시간이 더 걸릴 수 있습니다.
 
 ### PostgreSQL 중지
 
