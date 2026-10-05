@@ -37,8 +37,10 @@ Related to #<issue>
 
 ## 최종 squash commit message
 
+<!-- 한 영역 변경은 <type>(be|fe): <한글 요약>, 저장소 전체 변경은 <type>: <한글 요약> 형식을 사용합니다. -->
+
 ```text
-<type>(be|fe): <한글 요약>
+<확정한 최종 squash commit message>
 ```
 
 ## 체크리스트

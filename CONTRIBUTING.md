@@ -307,12 +307,12 @@ feat(be): 예약 종료 시간 검증 추가
 
 ## PR 공통 체크리스트
 
-PR 종류에 따라 `.github/PULL_REQUEST_TEMPLATE/`의 `work.md`, `issue.md`, `phase.md`를 사용한다. GitHub는 base나 branch 이름으로 여러 PR template 중 하나를 자동 선택하지 않으므로 PR 생성 URL의 `template` query parameter로 파일을 지정한다.
+PR 종류에 따라 `.github/PULL_REQUEST_TEMPLATE/`의 `work.md`, `issue.md`, `phase.md`를 사용한다. GitHub는 base나 branch 이름으로 여러 PR template 중 하나를 자동 선택하지 않으므로 비교 URL의 `quick_pull=1`과 `template` query parameter로 작성 화면과 파일을 지정한다.
 
 ```text
-template=work.md
-template=issue.md
-template=phase.md
+?quick_pull=1&template=work.md
+?quick_pull=1&template=issue.md
+?quick_pull=1&template=phase.md
 ```
 
 모든 PR에서 다음 항목을 확인한다.
