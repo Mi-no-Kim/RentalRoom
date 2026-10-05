@@ -15,3 +15,12 @@
 
 # Local AI helper scripts
 /scripts/local/
+
+# Local environment overrides
+/.env
+
+# Node.js
+/node_modules/
+/frontend/node_modules/
+/frontend/dist/
+/frontend/coverage/

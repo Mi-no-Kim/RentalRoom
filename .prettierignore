@@ -1,0 +1,11 @@
+**/node_modules/
+**/build/
+**/dist/
+**/coverage/
+**/generated/
+**/.gradle/
+package-lock.json
+backend/HELP.md
+docs/local-notes/
+docs/til/
+docs/PORTFOLIO_NOTES.md

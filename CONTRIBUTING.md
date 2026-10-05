@@ -177,7 +177,8 @@ Issue 제목에는 `[I-#]`, `[BUG]`, 영역명 같은 접두사를 사용하지 
 
 - 사용자 가치 Issue는 `.github/ISSUE_TEMPLATE/user-value.yml`을 사용한다.
 - 기술 문제 Issue는 `.github/ISSUE_TEMPLATE/technical-problem.yml`을 사용한다.
-- template을 거치지 않는 빈 Issue 생성은 비활성화한다.
+- `blank_issues_enabled: false`로 template을 거치지 않는 빈 Issue 생성을 비활성화한다.
+- GitHub의 권한 예외에 따라 Write·Maintain·Admin 역할에는 `Maintainers only`로 표시된 빈 Issue 선택지가 남고 Read·Triage 역할에는 구성한 Issue Form만 보인다. 관리자에게 이 선택지가 보이는 것은 설정 오류가 아니다.
 - 기대 동작과 실제 동작이 다른 결함은 기술 문제 Issue를 만든 뒤 `bug` label을 추가한다.
 - Issue Form의 label 자동 지정이 동작하려면 같은 이름의 label이 저장소에 먼저 존재해야 한다.
 
@@ -203,11 +204,11 @@ work/12-w2/validate-time-range
 
 ## 브랜치와 병합
 
-| 변경 | base 브랜치 | 병합 방식 |
-|---|---|---|
-| Work PR | 부모 Issue 브랜치 | squash merge |
+| 변경          | base 브랜치       | 병합 방식    |
+| ------------- | ----------------- | ------------ |
+| Work PR       | 부모 Issue 브랜치 | squash merge |
 | Issue 통합 PR | 부모 Phase 브랜치 | merge commit |
-| Phase 통합 PR | `main` | merge commit |
+| Phase 통합 PR | `main`            | merge commit |
 
 - Work PR은 부모 Issue를 `Related to #<issue>`로 연결하고 자동 종료하지 않는다.
 - Phase 통합 PR에서 포함된 Issue를 종료한다.
@@ -297,14 +298,21 @@ feat(be): 예약 종료 시간 검증 추가
 - 기존 파일을 정규화해야 하면 `git add --renormalize .` 후 staged diff를 검토한다.
 - 대량 formatter 변경은 기능 변경과 섞지 않고 별도의 논리적 commit으로 분리한다.
 
+## 로컬 통합 검증
+
+- commit 또는 PR 준비 전 저장소 루트에서 `npm run verify`로 전체 로컬 검증을 실행할 수 있다.
+- `verify`는 formatting 검사, frontend lint·test·build, backend Gradle `check`를 순서대로 실행하고 실패한 단계에서 중단한다.
+- backend 테스트가 실행되려면 Testcontainers를 위한 Docker Desktop이 필요하다.
+- `verify`는 로컬 편의 명령이며 CI workflow에서는 사용하지 않는다. CI는 formatting, frontend와 backend를 별도 job으로 실행한다.
+
 ## PR 공통 체크리스트
 
-PR 종류에 따라 `.github/PULL_REQUEST_TEMPLATE/`의 `work.md`, `issue.md`, `phase.md`를 사용한다. GitHub는 base나 branch 이름으로 여러 PR template 중 하나를 자동 선택하지 않으므로 PR 생성 URL의 `template` query parameter로 파일을 지정한다.
+PR 종류에 따라 `.github/PULL_REQUEST_TEMPLATE/`의 `work.md`, `issue.md`, `phase.md`를 사용한다. GitHub는 base나 branch 이름으로 여러 PR template 중 하나를 자동 선택하지 않으므로 비교 URL의 `quick_pull=1`과 `template` query parameter로 작성 화면과 파일을 지정한다.
 
 ```text
-template=work.md
-template=issue.md
-template=phase.md
+?quick_pull=1&template=work.md
+?quick_pull=1&template=issue.md
+?quick_pull=1&template=phase.md
 ```
 
 모든 PR에서 다음 항목을 확인한다.
