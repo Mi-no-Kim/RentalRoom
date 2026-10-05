@@ -44,3 +44,4 @@
 - [DB 통합 테스트에 Testcontainers PostgreSQL 사용](2026-10-05-testcontainers-postgresql.md)
 - [백엔드 formatting을 Spotless로 통합](2026-10-05-backend-spotless-formatting.md)
 - [REST API 학습을 위한 프런트엔드 기반 구성](2026-10-05-frontend-foundation.md)
+- [저장소 formatting을 Prettier와 Spotless로 통합](2026-10-05-repository-formatting.md)

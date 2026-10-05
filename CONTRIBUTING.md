@@ -203,11 +203,11 @@ work/12-w2/validate-time-range
 
 ## 브랜치와 병합
 
-| 변경 | base 브랜치 | 병합 방식 |
-|---|---|---|
-| Work PR | 부모 Issue 브랜치 | squash merge |
+| 변경          | base 브랜치       | 병합 방식    |
+| ------------- | ----------------- | ------------ |
+| Work PR       | 부모 Issue 브랜치 | squash merge |
 | Issue 통합 PR | 부모 Phase 브랜치 | merge commit |
-| Phase 통합 PR | `main` | merge commit |
+| Phase 통합 PR | `main`            | merge commit |
 
 - Work PR은 부모 Issue를 `Related to #<issue>`로 연결하고 자동 종료하지 않는다.
 - Phase 통합 PR에서 포함된 Issue를 종료한다.

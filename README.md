@@ -24,6 +24,22 @@ npm run build --workspace frontend
 
 프런트엔드는 React, TypeScript, Vite, React Router, Tailwind CSS와 TanStack Query를 사용합니다. 초기 학습 단계에서는 API 실패를 바로 관찰할 수 있도록 TanStack Query의 자동 재시도와 창 focus 재조회를 비활성화합니다.
 
+### 전체 formatting
+
+저장소 루트에서 다음 명령으로 Markdown, JSON, YAML과 프런트엔드 파일은 Prettier로, 백엔드 Java와 Gradle Kotlin DSL은 Spotless로 자동 정리합니다.
+
+```powershell
+npm run format
+```
+
+파일을 변경하지 않고 전체 formatting 위반만 검사하려면 다음 명령을 사용합니다.
+
+```powershell
+npm run format:check
+```
+
+Prettier와 백엔드 Spotless는 `format:prettier`, `format:prettier:check`, `format:backend`, `format:backend:check` 명령으로 각각 실행할 수도 있습니다.
+
 ### PostgreSQL 시작
 
 Docker Desktop을 실행한 뒤 저장소 루트에서 PostgreSQL을 시작합니다.

@@ -3,5 +3,16 @@
   "private": true,
   "workspaces": [
     "frontend"
-  ]
+  ],
+  "scripts": {
+    "format": "npm run format:prettier && npm run format:backend",
+    "format:check": "npm run format:prettier:check && npm run format:backend:check",
+    "format:prettier": "prettier --write --ignore-unknown .",
+    "format:prettier:check": "prettier --check --ignore-unknown .",
+    "format:backend": "node scripts/format-backend.mjs apply",
+    "format:backend:check": "node scripts/format-backend.mjs check"
+  },
+  "devDependencies": {
+    "prettier": "3.9.9"
+  }
 }
