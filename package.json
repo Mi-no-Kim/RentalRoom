@@ -5,12 +5,14 @@
     "frontend"
   ],
   "scripts": {
+    "verify": "npm run format:check && npm run lint --workspace frontend && npm run test --workspace frontend && npm run build --workspace frontend && npm run verify:backend",
+    "verify:backend": "node scripts/run-backend-gradle.mjs check",
     "format": "npm run format:prettier && npm run format:backend",
     "format:check": "npm run format:prettier:check && npm run format:backend:check",
     "format:prettier": "prettier --write --ignore-unknown .",
     "format:prettier:check": "prettier --check --ignore-unknown .",
-    "format:backend": "node scripts/format-backend.mjs apply",
-    "format:backend:check": "node scripts/format-backend.mjs check"
+    "format:backend": "node scripts/run-backend-gradle.mjs spotlessApply",
+    "format:backend:check": "node scripts/run-backend-gradle.mjs spotlessCheck"
   },
   "devDependencies": {
     "prettier": "3.9.9"

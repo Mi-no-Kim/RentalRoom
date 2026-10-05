@@ -28,7 +28,7 @@
 - 루트 package에 Prettier `3.9.9`를 정확한 버전으로 설치했다.
 - `.prettierrc.json`에서 LF와 `proseWrap: preserve`를 명시했다.
 - `.prettierignore`에서 dependency, build, coverage, lockfile, 생성 파일과 로컬 문서를 제외했다.
-- `scripts/format-backend.mjs`가 Windows에서는 `gradlew.bat`, 그 외 운영체제에서는 `./gradlew`로 Spotless를 실행하도록 구성했다.
+- `scripts/run-backend-gradle.mjs`가 Windows에서는 `gradlew.bat`, 그 외 운영체제에서는 `./gradlew`로 Spotless를 실행하도록 구성했다.
 - `npm run format`은 Prettier 적용 후 Spotless 적용을 실행하고 `npm run format:check`는 두 formatter를 변경 없이 검사한다.
 - Prettier와 Spotless는 개별 npm script로도 실행할 수 있게 했다.
 
@@ -48,6 +48,6 @@
 
 ## 연결
 
-- **관련 코드·테스트:** `package.json`, `.prettierrc.json`, `.prettierignore`, `scripts/format-backend.mjs`
+- **관련 코드·테스트:** `package.json`, `.prettierrc.json`, `.prettierignore`, `scripts/run-backend-gradle.mjs`
 - **포트폴리오 후보:** 해당 없음
 - **TIL 주제:** 해당 없음

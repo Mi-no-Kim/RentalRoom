@@ -25,6 +25,18 @@ npm run build --workspace frontend
 
 프런트엔드는 React, TypeScript, Vite, React Router, Tailwind CSS와 TanStack Query를 사용합니다. ESLint는 TypeScript, React Hooks와 TanStack Query의 오류 예방 규칙을 검사하고 코드 formatting은 Prettier가 담당합니다. 초기 학습 단계에서는 API 실패를 바로 관찰할 수 있도록 TanStack Query의 자동 재시도와 창 focus 재조회를 비활성화합니다.
 
+### 로컬 통합 검증
+
+로컬에서 commit 또는 PR 준비 전 전체 검증을 한 번에 실행합니다.
+
+```powershell
+npm run verify
+```
+
+이 명령은 formatting 검사, 프런트엔드 lint·test·production build와 백엔드 Gradle `check`를 순서대로 실행하며 실패한 단계에서 중단합니다. 백엔드 테스트가 실행될 때 Testcontainers가 PostgreSQL을 시작하므로 Docker Desktop이 필요합니다.
+
+`verify`는 개발자의 로컬 확인을 위한 편의 명령입니다. CI는 이 명령을 사용하지 않고 formatting, frontend와 backend를 별도 job에서 각각 검증합니다.
+
 ### 전체 formatting
 
 저장소 루트에서 다음 명령으로 Markdown, JSON, YAML과 프런트엔드 파일은 Prettier로, 백엔드 Java와 Gradle Kotlin DSL은 Spotless로 자동 정리합니다.

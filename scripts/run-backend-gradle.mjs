@@ -1,16 +1,13 @@
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
-const taskByMode = {
-  apply: "spotlessApply",
-  check: "spotlessCheck",
-};
+const supportedTasks = new Set(["spotlessApply", "spotlessCheck", "check"]);
+const task = process.argv[2];
 
-const mode = process.argv[2];
-const task = taskByMode[mode];
-
-if (!task) {
-  console.error("사용법: node scripts/format-backend.mjs <apply|check>");
+if (!supportedTasks.has(task)) {
+  console.error(
+    "사용법: node scripts/run-backend-gradle.mjs <spotlessApply|spotlessCheck|check>",
+  );
   process.exit(1);
 }
 

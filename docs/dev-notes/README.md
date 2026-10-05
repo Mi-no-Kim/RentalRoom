@@ -46,3 +46,4 @@
 - [REST API 학습을 위한 프런트엔드 기반 구성](2026-10-05-frontend-foundation.md)
 - [저장소 formatting을 Prettier와 Spotless로 통합](2026-10-05-repository-formatting.md)
 - [프런트엔드 ESLint를 코드 오류 예방에 한정](2026-10-05-frontend-eslint.md)
+- [로컬 전체 검증을 하나의 npm 명령으로 통합](2026-10-05-local-integrated-verification.md)
