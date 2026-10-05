@@ -37,6 +37,16 @@ npm run verify
 
 `verify`는 개발자의 로컬 확인을 위한 편의 명령입니다. CI는 이 명령을 사용하지 않고 formatting, frontend와 backend를 별도 job에서 각각 검증합니다.
 
+### CI
+
+GitHub Actions는 모든 pull request와 `main` branch push에서 다음 검사를 서로 독립된 job으로 실행합니다.
+
+- `Formatting`: 루트 Prettier와 백엔드 Spotless 검사
+- `Frontend`: ESLint, Vitest와 production build
+- `Backend`: Gradle `check`
+
+CI는 로컬 편의 명령인 `npm run verify`를 호출하지 않습니다. 각 job이 담당 명령을 직접 실행하므로 실패한 영역을 바로 구분할 수 있습니다. 백엔드 테스트는 GitHub-hosted runner의 Docker에서 Testcontainers PostgreSQL을 실행하며 Compose 개발용 데이터베이스는 시작하지 않습니다.
+
 ### 전체 formatting
 
 저장소 루트에서 다음 명령으로 Markdown, JSON, YAML과 프런트엔드 파일은 Prettier로, 백엔드 Java와 Gradle Kotlin DSL은 Spotless로 자동 정리합니다.
