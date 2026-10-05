@@ -40,4 +40,4 @@
 
 ## 기록 목록
 
-아직 작성된 개발 노트가 없다.
+- [로컬 PostgreSQL 실행에 Docker Compose 사용](2026-10-05-local-postgresql-docker-compose.md)
