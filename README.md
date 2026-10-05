@@ -62,6 +62,22 @@ docker compose down
 docker compose down --volumes
 ```
 
+### 백엔드 formatting
+
+백엔드 디렉터리에서 다음 명령으로 Java, Gradle Kotlin DSL과 `.properties` 파일을 자동 정리합니다.
+
+```powershell
+.\gradlew.bat spotlessApply
+```
+
+파일을 변경하지 않고 formatting 위반만 검사하려면 다음 명령을 사용합니다.
+
+```powershell
+.\gradlew.bat spotlessCheck
+```
+
+macOS 또는 Linux에서는 `./gradlew`를 사용합니다. 백엔드 `check`와 `build`에도 `spotlessCheck`가 포함됩니다.
+
 ## 프로젝트 문서
 
 - [기여 및 Git 운영 규칙](CONTRIBUTING.md)

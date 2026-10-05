@@ -42,3 +42,4 @@
 
 - [로컬 PostgreSQL 실행에 Docker Compose 사용](2026-10-05-local-postgresql-docker-compose.md)
 - [DB 통합 테스트에 Testcontainers PostgreSQL 사용](2026-10-05-testcontainers-postgresql.md)
+- [백엔드 formatting을 Spotless로 통합](2026-10-05-backend-spotless-formatting.md)

@@ -11,12 +11,10 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
 @SpringBootTest
 class RentalRoomApplicationTests {
 
-	@Container
-	@ServiceConnection
-	static final PostgreSQLContainer POSTGRES = new PostgreSQLContainer("postgres:18.6");
+    @Container
+    @ServiceConnection
+    static final PostgreSQLContainer POSTGRES = new PostgreSQLContainer("postgres:18.6");
 
-	@Test
-	void contextLoads() {
-	}
-
+    @Test
+    void contextLoads() {}
 }
