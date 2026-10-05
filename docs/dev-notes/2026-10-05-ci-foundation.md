@@ -1,6 +1,6 @@
 # 영역별 CI 검사 구성
 
-- **상태:** 로컬 구성 완료, 원격 실행 미확인
+- **상태:** 로컬·원격 검증 완료, 대상 Ruleset 연결 확인
 - **발견일:** 2026-10-05
 - **관련 기능:** GitHub Actions 품질 검사
 
@@ -43,12 +43,14 @@
 - frontend 테스트 파일 2개, 테스트 3개 통과
 - frontend TypeScript 검사와 Vite production build 통과
 - backend Gradle `check` 성공
-- workflow의 실제 GitHub-hosted runner 실행: branch push 후 확인 필요
+- PR #2의 GitHub-hosted runner에서 `Formatting`, `Frontend`, `Backend` 세 job 성공: https://github.com/Mi-no-Kim/RentalRoom/actions/runs/37289962547
+- 세 check run의 source가 GitHub Actions app ID `15368`임을 확인했다.
+- `protect-main`과 `protect-integration-branches`에서 세 job을 필수 check로 설정하고 최신 base 반영 조건을 켠 것을 원격 API 재조회로 확인했다.
+- `protect-work-branches`의 기존 force push 차단 규칙은 그대로 유지했다.
 
 ## 남은 내용
 
-- branch를 원격에 push한 뒤 세 job의 실제 성공을 확인한다.
-- 성공한 `Formatting`, `Frontend`, `Backend` check를 대상 branch Ruleset의 required status check로 연결한다.
+- 실제 Phase·Issue PR에서 필수 check와 최신 base 조건의 병합 차단 동작은 아직 확인하지 않았다.
 
 ## 연결
 
