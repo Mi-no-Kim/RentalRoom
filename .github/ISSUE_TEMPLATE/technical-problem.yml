@@ -1,0 +1,78 @@
+name: 기술 문제
+description: 독립된 조사와 해결이 필요한 기술 문제를 기록합니다.
+labels:
+  - "type:technical-problem"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        제목에는 접두사나 해결책 대신 확인된 문제 또는 증상을 작성합니다.
+        기대 동작과 실제 동작이 다른 결함이라면 생성 후 `bug` label을 추가합니다.
+
+  - type: textarea
+    id: problem-impact
+    attributes:
+      label: 문제와 영향
+      description: 현재 확인된 문제와 해결하지 않을 때 영향을 받는 동작이나 범위를 작성합니다.
+      placeholder: |
+        현재 ... 문제가 발생한다.
+        이 문제는 ...에 영향을 준다.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction-evidence
+    attributes:
+      label: 재현 방법과 근거
+      description: 재현 절차와 테스트, 로그, 측정값, 의존성 구조, 관련 Issue·PR·개발 노트 등의 근거를 작성합니다.
+      placeholder: |
+        1. ... 조건을 준비한다.
+        2. ... 동작을 실행한다.
+        3. ... 문제를 확인한다.
+
+        근거:
+        - 테스트, 로그 또는 측정값:
+        - 관련 Issue, PR 또는 개발 노트:
+    validations:
+      required: true
+
+  - type: textarea
+    id: completion-criteria
+    attributes:
+      label: 완료 조건
+      description: 특정 구현 방법이 아니라 문제가 해결되었다고 판단할 수 있는 결과를 작성합니다.
+      placeholder: |
+        - [ ] 기술적으로 확인할 수 있는 해결 결과
+        - [ ] 기존 동작 보존 또는 핵심 실패 경로
+        - [ ] 회귀 검증 조건
+    validations:
+      required: true
+
+  - type: textarea
+    id: excluded-scope
+    attributes:
+      label: 제외 범위
+      description: 이번 Issue에서 다루지 않을 내용을 작성합니다. 없으면 `없음`이라고 작성합니다.
+      placeholder: 없음
+    validations:
+      required: true
+
+  - type: textarea
+    id: work-plan
+    attributes:
+      label: Work 계획
+      description: 원인이 불명확하면 해결책을 확정하지 않고 재현과 원인 범위 축소부터 계획합니다.
+      placeholder: |
+        - [ ] w1: 재현과 원인 범위 축소 — 검증 방법
+        - [ ] w2: 논리적 변경 목적 — 검증 방법
+    validations:
+      required: true
+
+  - type: textarea
+    id: open-decisions
+    attributes:
+      label: 미결정 사항
+      description: 구현 전에 결정하거나 추가로 조사해야 할 내용을 작성합니다. 없으면 `없음`이라고 작성합니다.
+      placeholder: 없음
+    validations:
+      required: true
