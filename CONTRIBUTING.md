@@ -177,7 +177,8 @@ Issue 제목에는 `[I-#]`, `[BUG]`, 영역명 같은 접두사를 사용하지 
 
 - 사용자 가치 Issue는 `.github/ISSUE_TEMPLATE/user-value.yml`을 사용한다.
 - 기술 문제 Issue는 `.github/ISSUE_TEMPLATE/technical-problem.yml`을 사용한다.
-- template을 거치지 않는 빈 Issue 생성은 비활성화한다.
+- `blank_issues_enabled: false`로 template을 거치지 않는 빈 Issue 생성을 비활성화한다.
+- GitHub의 권한 예외에 따라 Write·Maintain·Admin 역할에는 `Maintainers only`로 표시된 빈 Issue 선택지가 남고 Read·Triage 역할에는 구성한 Issue Form만 보인다. 관리자에게 이 선택지가 보이는 것은 설정 오류가 아니다.
 - 기대 동작과 실제 동작이 다른 결함은 기술 문제 Issue를 만든 뒤 `bug` label을 추가한다.
 - Issue Form의 label 자동 지정이 동작하려면 같은 이름의 label이 저장소에 먼저 존재해야 한다.
 
