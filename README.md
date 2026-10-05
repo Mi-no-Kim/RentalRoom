@@ -4,6 +4,26 @@ Spring 학습을 위한 공간 예약·대여 서비스입니다.
 
 ## 로컬 개발 환경
 
+### 프런트엔드 실행
+
+저장소 루트에서 npm 의존성을 설치하고 프런트엔드 개발 서버를 실행합니다.
+
+```powershell
+npm install
+npm run dev --workspace frontend
+```
+
+기본 주소는 `http://localhost:5173`입니다.
+
+프런트엔드 테스트와 production build는 각각 다음 명령으로 확인합니다.
+
+```powershell
+npm run test --workspace frontend
+npm run build --workspace frontend
+```
+
+프런트엔드는 React, TypeScript, Vite, React Router, Tailwind CSS와 TanStack Query를 사용합니다. 초기 학습 단계에서는 API 실패를 바로 관찰할 수 있도록 TanStack Query의 자동 재시도와 창 focus 재조회를 비활성화합니다.
+
 ### PostgreSQL 시작
 
 Docker Desktop을 실행한 뒤 저장소 루트에서 PostgreSQL을 시작합니다.

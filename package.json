@@ -1,0 +1,7 @@
+{
+  "name": "rental-room",
+  "private": true,
+  "workspaces": [
+    "frontend"
+  ]
+}
