@@ -18,11 +18,12 @@ npm run dev --workspace frontend
 프런트엔드 테스트와 production build는 각각 다음 명령으로 확인합니다.
 
 ```powershell
+npm run lint --workspace frontend
 npm run test --workspace frontend
 npm run build --workspace frontend
 ```
 
-프런트엔드는 React, TypeScript, Vite, React Router, Tailwind CSS와 TanStack Query를 사용합니다. 초기 학습 단계에서는 API 실패를 바로 관찰할 수 있도록 TanStack Query의 자동 재시도와 창 focus 재조회를 비활성화합니다.
+프런트엔드는 React, TypeScript, Vite, React Router, Tailwind CSS와 TanStack Query를 사용합니다. ESLint는 TypeScript, React Hooks와 TanStack Query의 오류 예방 규칙을 검사하고 코드 formatting은 Prettier가 담당합니다. 초기 학습 단계에서는 API 실패를 바로 관찰할 수 있도록 TanStack Query의 자동 재시도와 창 focus 재조회를 비활성화합니다.
 
 ### 전체 formatting
 
