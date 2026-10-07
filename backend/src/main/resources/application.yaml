@@ -5,3 +5,6 @@ spring:
     url: "jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:rental_room}"
     username: ${DB_USERNAME:rental_room}
     password: ${DB_PASSWORD:rental_room}
+  jpa:
+    hibernate:
+      ddl-auto: validate
