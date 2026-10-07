@@ -83,6 +83,8 @@ docker compose ps
 
 ### 백엔드 실행
 
+백엔드 시작 시 Flyway가 DB 스키마 변경을 적용하고, JPA는 `ddl-auto: validate`로 엔티티와 DB의 기본 구조를 확인합니다.
+
 Windows PowerShell에서는 다음 명령을 사용합니다.
 
 ```powershell
