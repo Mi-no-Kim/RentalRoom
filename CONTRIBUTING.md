@@ -305,7 +305,7 @@ feat(be): 예약 종료 시간 검증 추가
 - commit 또는 PR 준비 전 저장소 루트에서 `npm run verify`로 전체 로컬 검증을 실행할 수 있다.
 - `verify`는 formatting 검사, frontend lint·test·build, backend Gradle `check`를 순서대로 실행하고 실패한 단계에서 중단한다.
 - backend 테스트가 실행되려면 Testcontainers를 위한 Docker Desktop이 필요하다.
-- `verify`는 로컬 편의 명령이며 CI workflow에서는 사용하지 않는다. CI는 formatting, frontend와 backend를 별도 job으로 보고하되 Prettier는 항상 실행하고 frontend·backend의 실제 검사는 변경 영역에 따라 실행한다. backend `check`에 Spotless가 포함된다.
+- `verify`는 로컬 편의 명령이며 CI workflow에서는 사용하지 않는다. CI는 `Formatting`에서 Prettier 검사와 변경 파일 판별을 실행하고, 변경이 없는 영역의 `Frontend`·`Backend` job은 runner 시작 전에 건너뛴다. 세 job 이름은 필수 검사로 유지하며, 판별 실패는 `Formatting` 실패로 처리한다. backend `check`에 Spotless가 포함된다.
 
 ## PR 공통 체크리스트
 
