@@ -28,6 +28,22 @@ describe("App", () => {
     ).toBeInTheDocument();
   });
 
+  it("홈에서 회원가입 화면으로 이동한다", async () => {
+    const user = userEvent.setup();
+    render(
+      <AppProviders>
+        <App />
+      </AppProviders>,
+    );
+
+    await user.click(screen.getByRole("link", { name: "회원가입" }));
+
+    expect(
+      screen.getByRole("heading", { name: "회원가입" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "아이디" })).toBeInTheDocument();
+  });
+
   it("알 수 없는 경로에서 홈으로 돌아갈 수 있다", async () => {
     window.history.replaceState(null, "", "/unknown");
     const user = userEvent.setup();

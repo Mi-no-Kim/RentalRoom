@@ -1,6 +1,6 @@
 # 회원가입 중복을 DB 제약에서 판정하고 API 오류로 변환하기
 
-- **상태:** 가입 `POST` 구현·검증 완료, 사전 중복 확인 `GET`은 후속
+- **상태:** 가입 `POST`·사전 중복 확인 `GET`·가입 화면 연결 검증 완료
 - **발견일:** 2026-10-07
 - **관련 기능:** Issue #3 w2 회원가입
 
@@ -13,7 +13,7 @@
 
 - 서비스의 사전 조회만으로는 DB 고유 인덱스가 거부한 경우를 처리하지 못한다.
 - 비밀번호 인코딩은 저장 전에 실행된다. 사전 조회를 없애면 중복 요청에도 PBKDF2 인코딩 비용이 든다.
-- 가입 화면의 아이디·닉네임 사전 중복 확인을 도입하기로 했으나, 조회 API와 화면은 아직 구현되지 않았다. 중복 가입 요청이 얼마나 줄어들지는 측정하지 않았다.
+- 아이디·닉네임 사전 중복 확인 `GET`과 가입 화면 연결은 검증을 마쳤다. 중복 가입 요청이 얼마나 줄어들지는 측정하지 않았다.
 
 ## 고민한 선택지
 
@@ -32,16 +32,18 @@
 - PostgreSQL Testcontainers 마이그레이션 테스트에서 대소문자만 다른 아이디·닉네임의 삽입 거부와 같은 성·이름 허용을 확인했다.
 - `MemberSignUpIntegrationTests`에서 아이디 중복과 대소문자만 다른 닉네임 중복을 각각 필드별 `409`로 확인했다. 정상 가입·대표 입력 오류·이름 중복 허용 테스트도 통과했다.
 - 2026-10-07 `gradlew.bat check --rerun-tasks --no-daemon`에서 Spotless·컴파일·테스트가 모두 통과했다. 테스트 결과 XML에는 가입 테스트 5개, 마이그레이션 테스트 1개, 앱 테스트 1개가 모두 실패 0건으로 기록됐다. 이 실행은 Docker Desktop의 활성 Linux 엔진 주소를 `DOCKER_HOST`에 지정했다.
+- 2026-10-08 `check --rerun-tasks --no-daemon`에서 공개 `GET`의 사용 가능·중복 결과, 닉네임 대소문자 비교와 필드별 `400 INVALID_INPUT`을 포함한 가입 테스트 14개, 전체 테스트 16개가 실패 없이 통과했다.
 
 ## 남은 내용
 
 - 동시에 같은 값으로 가입하는 요청을 별도 테스트로 재현하지는 않았다. 최종 고유성은 PostgreSQL 인덱스에 의존한다.
-- 사전 중복 확인 `GET`과 화면은 아직 구현 전이다. 중복 요청 빈도, PBKDF2 낭비, 사전 조회의 총비용은 측정하지 않았다.
+- 사전 중복 확인 화면은 구현됐다. 중복 요청 빈도, PBKDF2 낭비, 사전 조회의 총비용은 측정하지 않았다.
 - 인덱스 이름을 바꾸면 예외 처리기의 이름 매핑도 함께 변경해야 한다.
 
 ## 연결
 
 - **관련 코드·테스트:** `backend/src/main/java/com/minokim/rentalroom/member/service/MemberService.java`, `backend/src/main/java/com/minokim/rentalroom/member/controller/MemberExceptionHandler.java`, `backend/src/test/java/com/minokim/rentalroom/member/MemberSignUpIntegrationTests.java`
 - **API 계약:** `docs/api/member-sign-up.md`
+- **화면 입력·중복 확인:** [회원가입 화면의 입력 검사와 사전 중복 확인](2026-10-08-sign-up-input-and-availability.md)
 - **포트폴리오 후보:** 미정 (동시 요청이나 성능 비교 실험은 수행하지 않음)
 - **TIL 주제:** 해당 없음
