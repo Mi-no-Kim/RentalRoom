@@ -48,7 +48,7 @@
 
 ## 남은 내용
 
-- 아직 Flyway migration 파일이 없으므로 실제 migration 적용은 첫 schema 변경 때 다시 검증해야 한다.
+- 후속 완료: 회원 테이블 Flyway V1 마이그레이션을 빈 Testcontainers PostgreSQL에 적용하고 제약 동작을 검증했다. [관련 기록](2026-10-07-member-uniqueness-migration.md)
 - `static @Container`는 테스트 클래스 안에서 DB를 공유하므로 향후 여러 테스트 메서드의 데이터 격리 전략이 별도로 필요하다.
 - 현재 로그의 Open EntityManager in View, 임시 Security 비밀번호와 Mockito agent 경고는 이번 Testcontainers 범위와 별개이며 각 기능을 구성할 때 다룬다.
 - Docker 엔진이 없는 환경에서는 DB 통합 테스트를 실행할 수 없다.
