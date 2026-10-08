@@ -14,6 +14,7 @@ npm run dev --workspace frontend
 ```
 
 기본 주소는 `http://localhost:5173`입니다.
+회원가입 화면은 `http://localhost:5173/sign-up`입니다. 개발 서버는 `/api` 요청을 `http://localhost:8080`으로 전달하므로, 가입 화면에서 API를 확인할 때는 아래 PostgreSQL과 백엔드도 실행해야 합니다.
 
 프런트엔드 테스트와 production build는 각각 다음 명령으로 확인합니다.
 

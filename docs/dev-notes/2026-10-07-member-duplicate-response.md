@@ -1,6 +1,6 @@
 # 회원가입 중복을 DB 제약에서 판정하고 API 오류로 변환하기
 
-- **상태:** 가입 `POST`와 사전 중복 확인 `GET` 구현·검증 완료, 가입 화면은 후속
+- **상태:** 가입 `POST`·사전 중복 확인 `GET`·가입 화면 연결 검증 완료
 - **발견일:** 2026-10-07
 - **관련 기능:** Issue #3 w2 회원가입
 
@@ -13,7 +13,7 @@
 
 - 서비스의 사전 조회만으로는 DB 고유 인덱스가 거부한 경우를 처리하지 못한다.
 - 비밀번호 인코딩은 저장 전에 실행된다. 사전 조회를 없애면 중복 요청에도 PBKDF2 인코딩 비용이 든다.
-- 아이디·닉네임 사전 중복 확인 `GET`은 구현·통합 테스트 검증을 마쳤다. 가입 화면은 아직 구현되지 않았으며, 중복 가입 요청이 얼마나 줄어들지는 측정하지 않았다.
+- 아이디·닉네임 사전 중복 확인 `GET`과 가입 화면 연결은 검증을 마쳤다. 중복 가입 요청이 얼마나 줄어들지는 측정하지 않았다.
 
 ## 고민한 선택지
 
@@ -37,12 +37,13 @@
 ## 남은 내용
 
 - 동시에 같은 값으로 가입하는 요청을 별도 테스트로 재현하지는 않았다. 최종 고유성은 PostgreSQL 인덱스에 의존한다.
-- 사전 중복 확인 화면은 아직 구현 전이다. 중복 요청 빈도, PBKDF2 낭비, 사전 조회의 총비용은 측정하지 않았다.
+- 사전 중복 확인 화면은 구현됐다. 중복 요청 빈도, PBKDF2 낭비, 사전 조회의 총비용은 측정하지 않았다.
 - 인덱스 이름을 바꾸면 예외 처리기의 이름 매핑도 함께 변경해야 한다.
 
 ## 연결
 
 - **관련 코드·테스트:** `backend/src/main/java/com/minokim/rentalroom/member/service/MemberService.java`, `backend/src/main/java/com/minokim/rentalroom/member/controller/MemberExceptionHandler.java`, `backend/src/test/java/com/minokim/rentalroom/member/MemberSignUpIntegrationTests.java`
 - **API 계약:** `docs/api/member-sign-up.md`
+- **화면 입력·중복 확인:** [회원가입 화면의 입력 검사와 사전 중복 확인](2026-10-08-sign-up-input-and-availability.md)
 - **포트폴리오 후보:** 미정 (동시 요청이나 성능 비교 실험은 수행하지 않음)
 - **TIL 주제:** 해당 없음
