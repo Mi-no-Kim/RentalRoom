@@ -44,7 +44,7 @@
 ## 남은 내용
 
 - 실제 Spring API가 정해지면 HTTP 상태와 오류 본문을 보존하는 공통 `fetch` 경계를 추가한다.
-- 프런트엔드 linter와 구체적인 규칙은 별도 결정이 필요하다.
+- 후속 완료: 프런트엔드 linter와 규칙을 별도로 정했다. [관련 기록](2026-10-05-frontend-eslint.md)
 - caching, 선택적 retry와 optimistic update는 기본 CRUD 흐름을 확인한 뒤 필요성을 검토한다.
 
 ## 연결
