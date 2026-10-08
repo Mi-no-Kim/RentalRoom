@@ -18,3 +18,4 @@
 - 화면 테스트에서 형식 오류 표시, 유효한 값만 500ms 후 조회, 한글 조합 중 조회 보류, blur 즉시 조회, 오래된 응답 무시, `201` 완료 안내와 `400`·`409` 필드 오류를 확인했다. 사전 조회가 사용 가능으로 나왔어도 최종 가입이 `409`면 필드 오류를 표시한다.
 - 로컬 Spring 서버와 Vite `/api` proxy를 실행해 `GET /api/members/availability?field=loginId&value=rental1`이 `200 {"available":true}`로 전달되는 것을 확인했다. 이 값은 확인 당시 로컬 DB의 상태다.
 - 로컬 개발 DB에 시험 회원 `w3check081`을 Vite proxy의 `POST /api/members`로 등록해 `201`을 확인했다. 같은 아이디의 재요청은 `409 LOGIN_ID_ALREADY_USED/loginId`였고, 이후 `GET`은 `available=false`를 반환했다. 브라우저 화면에서도 해당 아이디에 “이미 사용 중입니다.”가 표시됐다.
+- 이후 사용자가 안내받은 화면 직접 검증을 완료했다고 보고했다. 브라우저에서 가입 제출을 포함한 개별 시나리오의 결과는 별도로 기록되지 않았다.
