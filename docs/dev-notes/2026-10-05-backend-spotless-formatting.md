@@ -49,7 +49,7 @@
 ## 남은 내용
 
 - 후속 완료: 루트 Prettier 설정과 formatting 통합 명령을 추가했다. [관련 기록](2026-10-05-repository-formatting.md)
-- 후속 완료: CI formatting job을 연결했다. [관련 기록](2026-10-05-ci-foundation.md)
+- 후속 변경: 초기 CI formatting job에서 Spotless를 실행했다. 현재는 백엔드 변경 시 Backend job의 Gradle `check`에서 검사한다. [초기 구성](2026-10-05-ci-foundation.md), [현재 구성](2026-10-08-selective-ci-checks.md)
 
 ## 근거
 

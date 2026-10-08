@@ -36,7 +36,7 @@ npm run verify
 
 이 명령은 formatting 검사, 프런트엔드 lint·test·production build와 백엔드 Gradle `check`를 순서대로 실행하며 실패한 단계에서 중단합니다. 백엔드 테스트가 실행될 때 Testcontainers가 PostgreSQL을 시작하므로 Docker Desktop이 필요합니다.
 
-`verify`는 개발자의 로컬 확인을 위한 편의 명령입니다. CI는 이 명령을 사용하지 않고 formatting, frontend와 backend를 별도 job에서 각각 검증합니다.
+`verify`는 개발자의 로컬 확인을 위한 편의 명령입니다. CI는 이 명령을 사용하지 않고 formatting, frontend와 backend의 검사 상태를 별도 job으로 보고합니다.
 
 ### CI
 

@@ -465,7 +465,7 @@ Milestone의 목표·완료 조건 원문과 Issue별 배경·구현 내용·Wor
 - 리뷰 대화를 모두 해결해야 병합할 수 있다.
 - PR merge 방식은 merge commit만 허용한다.
 - force push와 브랜치 삭제를 차단한다.
-- CI를 구성한 뒤 필수 검사와 최신 base 반영 조건을 추가한다.
+- `Formatting`, `Frontend`, `Backend`를 필수 검사로 요구하고 최신 base 반영 조건을 적용한다.
 
 ### `protect-integration-branches`
 
@@ -478,7 +478,7 @@ Milestone의 목표·완료 조건 원문과 Issue별 배경·구현 내용·Wor
 - Phase와 Issue 브랜치를 함께 대상으로 하므로 merge commit과 squash merge를 허용하고 실제 방식은 브랜치·병합 표를 따른다.
 - force push를 차단한다.
 - 병합 후 브랜치를 삭제해야 하므로 브랜치 삭제는 허용한다.
-- CI를 구성한 뒤 필수 검사와 최신 base 반영 조건을 추가한다.
+- `Formatting`, `Frontend`, `Backend`를 필수 검사로 요구하고 최신 base 반영 조건을 적용한다.
 
 ### `protect-work-branches`
 
@@ -493,6 +493,5 @@ Milestone의 목표·완료 조건 원문과 Issue별 배경·구현 내용·Wor
 - Issue와 Phase에 merge commit이 필요하므로 linear history를 요구하지 않는다.
 - 현재 1인 저장소이므로 승인 1명을 요구하지 않는다.
 - commit message는 merge commit 예외와 squash 흐름을 고려해 Rules로 강제하지 않는다.
-- 필수 CI 검사는 실제 workflow를 만든 뒤 추가한다.
 
 저장소에서는 squash merge와 merge commit을 허용하고 rebase merge는 비활성화한다. 병합 결과를 검증한 뒤 브랜치를 삭제하기 위해 자동 브랜치 삭제는 비활성화한다.

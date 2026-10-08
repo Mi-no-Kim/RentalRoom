@@ -43,7 +43,7 @@
 
 ## 남은 내용
 
-- 후속 완료: CI에서 `npm run format:check`를 별도 formatting job으로 실행한다. [관련 기록](2026-10-05-ci-foundation.md)
+- 후속 변경: 초기 CI의 formatting job은 `npm run format:check`를 실행했다. 현재는 Prettier만 실행하고, 백엔드 Spotless는 변경 영역에 따라 Gradle `check`에서 검사한다. [초기 구성](2026-10-05-ci-foundation.md), [현재 구성](2026-10-08-selective-ci-checks.md)
 - 후속 완료: 프런트엔드 linter의 역할과 규칙을 별도로 정했다. [관련 기록](2026-10-05-frontend-eslint.md)
 
 ## 연결
