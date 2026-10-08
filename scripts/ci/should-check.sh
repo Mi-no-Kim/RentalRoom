@@ -23,7 +23,7 @@ fi
 
 changed_files=$(mktemp)
 trap 'rm -f "$changed_files"' EXIT
-git diff --name-only --no-renames -z "$base" "$head" -- > "$changed_files"
+git diff --name-only --no-renames -z "$base...$head" -- > "$changed_files"
 
 should_run=false
 while IFS= read -r -d '' path; do

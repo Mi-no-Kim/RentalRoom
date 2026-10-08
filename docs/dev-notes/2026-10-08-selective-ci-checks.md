@@ -20,11 +20,12 @@
 - `Frontend`와 `Backend`는 항상 상태를 보고하되, PR의 변경 파일에 따라 실제 검사 단계를 실행한다. `Backend`의 Gradle `check`가 Spotless와 테스트를 함께 검사한다.
 - `docs/`와 Markdown 파일만 변경한 PR은 두 영역의 실제 검사를 건너뛴다. `frontend/`와 루트 npm 의존성 파일은 프런트엔드, `backend/`는 백엔드 변경이다.
 - CI 설정처럼 공통 파일과 분류되지 않은 파일은 두 영역을 모두 검사한다. `main` push에서도 둘 다 검사한다.
+- PR의 변경 파일은 대상 브랜치와 작업 브랜치의 공통 조상부터 비교한다. 대상 브랜치가 앞서 나갔을 때 그쪽 변경을 PR 변경으로 잘못 세지 않기 위해서다.
 - 변경 파일 판별 명령이 실패하면 해당 job도 실패한다. 검사 대상을 알 수 없는 상태를 성공으로 처리하지 않는다.
 
 ## 검증과 남은 한계
 
-- 기존 commit의 변경 파일 목록을 사용해 문서 전용(`false/false`), 프런트엔드 전용(`true/false`), 백엔드 전용(`false/true`), CI 공통 및 혼합 변경(`true/true`)을 확인했다. `main` push는 두 영역 모두 `true`였고 PR SHA 누락 시 분류 명령이 실패했다.
+- 기존 commit의 변경 파일 목록을 사용해 문서 전용(`false/false`), 프런트엔드 전용(`true/false`), 백엔드 전용(`false/true`), CI 공통 및 혼합 변경(`true/true`)을 확인했다. 대상 브랜치가 앞선 문서 전용 사례에서도 `false/false`였다. `main` push는 두 영역 모두 `true`였고 PR SHA 누락·오류 시 분류 명령이 실패했다.
 - Bash 구문 검사, Prettier 검사와 `git diff --check`가 통과했다.
 - w5 PR의 필수 검사 결과는 PR 생성 후 확인한다. 변경 유형별 실제 GitHub PR은 검증용으로 만들지 않는다. 후속 실제 PR에서 예상과 다른 동작이 발견되면 수정한다.
 
