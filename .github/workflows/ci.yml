@@ -21,16 +21,10 @@ jobs:
         with:
           node-version: 24
           cache: npm
-      - name: Set up Java
-        uses: actions/setup-java@v6
-        with:
-          distribution: temurin
-          java-version: 21
-          cache: gradle
       - name: Install npm dependencies
         run: npm ci
-      - name: Check formatting
-        run: npm run format:check
+      - name: Check Prettier formatting
+        run: npm run format:prettier:check
 
   frontend:
     name: Frontend
@@ -38,18 +32,33 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Check changed files
+        id: scope
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          should_run=$(bash scripts/ci/should-check.sh frontend "$GITHUB_EVENT_NAME" "$BASE_SHA" "$HEAD_SHA")
+          echo "run=$should_run" >> "$GITHUB_OUTPUT"
       - name: Set up Node.js
+        if: steps.scope.outputs.run == 'true'
         uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
       - name: Install npm dependencies
+        if: steps.scope.outputs.run == 'true'
         run: npm ci
       - name: Lint frontend
+        if: steps.scope.outputs.run == 'true'
         run: npm run lint --workspace frontend
       - name: Test frontend
+        if: steps.scope.outputs.run == 'true'
         run: npm run test --workspace frontend
       - name: Build frontend
+        if: steps.scope.outputs.run == 'true'
         run: npm run build --workspace frontend
 
   backend:
@@ -58,12 +67,24 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Check changed files
+        id: scope
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          should_run=$(bash scripts/ci/should-check.sh backend "$GITHUB_EVENT_NAME" "$BASE_SHA" "$HEAD_SHA")
+          echo "run=$should_run" >> "$GITHUB_OUTPUT"
       - name: Set up Java
+        if: steps.scope.outputs.run == 'true'
         uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: 21
           cache: gradle
       - name: Check backend
+        if: steps.scope.outputs.run == 'true'
         working-directory: backend
         run: ./gradlew check --no-daemon
