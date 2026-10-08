@@ -21,6 +21,24 @@ function renderSignUp() {
   );
 }
 
+function fillValidForm() {
+  fireEvent.change(screen.getByRole("textbox", { name: "아이디" }), {
+    target: { value: "rental1" },
+  });
+  fireEvent.change(screen.getByLabelText("비밀번호"), {
+    target: { value: "Example9!" },
+  });
+  fireEvent.change(screen.getByRole("textbox", { name: "성" }), {
+    target: { value: "김" },
+  });
+  fireEvent.change(screen.getByRole("textbox", { name: "이름" }), {
+    target: { value: "민수" },
+  });
+  fireEvent.change(screen.getByRole("textbox", { name: "닉네임" }), {
+    target: { value: "Min_1" },
+  });
+}
+
 describe("회원가입 입력", () => {
   afterEach(() => {
     cleanup();
@@ -168,5 +186,118 @@ describe("회원가입 입력", () => {
     );
     expect(screen.getByText("사용할 수 있습니다.")).toBeInTheDocument();
     expect(screen.queryByText("이미 사용 중입니다.")).toBeNull();
+  });
+
+  it("유효한 입력을 제출하면 같은 화면에 완료를 표시한다", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({ status: 201 });
+    vi.stubGlobal("fetch", fetchMock);
+    renderSignUp();
+    fillValidForm();
+
+    fireEvent.click(screen.getByRole("button", { name: "가입하기" }));
+
+    expect(
+      await screen.findByRole("heading", { name: "회원가입이 완료되었습니다" }),
+    ).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "가입하기" })).toBeNull();
+    expect(fetchMock).toHaveBeenCalledWith(
+      "/api/members",
+      expect.objectContaining({
+        method: "POST",
+        body: JSON.stringify({
+          loginId: "rental1",
+          password: "Example9!",
+          familyName: "김",
+          givenName: "민수",
+          nickname: "Min_1",
+        }),
+      }),
+    );
+  });
+
+  it.each([
+    [
+      400,
+      "INVALID_INPUT",
+      "password",
+      "비밀번호",
+      "서버의 입력 규칙을 확인해 주세요.",
+    ],
+    [409, "LOGIN_ID_ALREADY_USED", "loginId", "아이디", "이미 사용 중입니다."],
+    [409, "NICKNAME_ALREADY_USED", "nickname", "닉네임", "이미 사용 중입니다."],
+  ])(
+    "서버 %i %s 응답을 해당 입력칸에 표시한다",
+    async (status, code, field, label, message) => {
+      vi.stubGlobal(
+        "fetch",
+        vi.fn().mockResolvedValue({
+          status,
+          json: async () => ({ code, field }),
+        }),
+      );
+      renderSignUp();
+      fillValidForm();
+
+      fireEvent.click(screen.getByRole("button", { name: "가입하기" }));
+
+      expect(await screen.findByText(message)).toBeInTheDocument();
+      expect(screen.getByLabelText(label)).toHaveAttribute(
+        "aria-invalid",
+        "true",
+      );
+      fireEvent.blur(screen.getByLabelText(label));
+      expect(screen.getByText(message)).toBeInTheDocument();
+      expect(
+        screen.queryByRole("heading", { name: "회원가입이 완료되었습니다" }),
+      ).toBeNull();
+    },
+  );
+
+  it("형식 오류가 있으면 가입 요청을 보내지 않는다", () => {
+    const fetchMock = vi.fn();
+    vi.stubGlobal("fetch", fetchMock);
+    renderSignUp();
+
+    fireEvent.click(screen.getByRole("button", { name: "가입하기" }));
+
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(screen.getAllByRole("alert")).toHaveLength(5);
+  });
+
+  it("사전 조회가 사용 가능이어도 최종 가입 409를 해당 필드에 표시한다", async () => {
+    vi.useFakeTimers();
+    const fetchMock = vi.fn((url: string) =>
+      Promise.resolve(
+        url === "/api/members"
+          ? {
+              status: 409,
+              json: async () => ({
+                code: "LOGIN_ID_ALREADY_USED",
+                field: "loginId",
+              }),
+            }
+          : { ok: true, json: async () => ({ available: true }) },
+      ),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+    renderSignUp();
+    fillValidForm();
+    await act(async () => vi.advanceTimersByTimeAsync(500));
+
+    const loginId = screen.getByRole("textbox", { name: "아이디" });
+    expect(
+      within(loginId.parentElement!).getByText("사용할 수 있습니다."),
+    ).toBeInTheDocument();
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: "가입하기" }));
+    });
+
+    expect(
+      within(loginId.parentElement!).getByText("이미 사용 중입니다."),
+    ).toBeInTheDocument();
+    expect(
+      within(loginId.parentElement!).queryByText("사용할 수 있습니다."),
+    ).toBeNull();
   });
 });

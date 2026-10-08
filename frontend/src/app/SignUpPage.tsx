@@ -133,6 +133,9 @@ export function SignUpPage() {
     givenName: null,
     nickname: null,
   });
+  const [submitting, setSubmitting] = useState(false);
+  const [complete, setComplete] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [composing, setComposing] = useState({
     loginId: false,
     nickname: false,
@@ -140,20 +143,69 @@ export function SignUpPage() {
   const loginIdCheck = useAvailability(
     "loginId",
     values.loginId,
-    composing.loginId,
+    composing.loginId || complete,
   );
   const nicknameCheck = useAvailability(
     "nickname",
     values.nickname,
-    composing.nickname,
+    composing.nickname || complete,
   );
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (submitting) return;
     const nextErrors = Object.fromEntries(
       fields.map(({ name }) => [name, validateField(name, values[name])]),
     ) as Errors;
     setErrors(nextErrors);
+    setSubmitError(null);
+    if (Object.values(nextErrors).some(Boolean)) return;
+    if (
+      loginIdCheck.result?.status === "used" ||
+      nicknameCheck.result?.status === "used"
+    ) {
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const response = await fetch("/api/members", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+      if (response.status === 201) {
+        setComplete(true);
+        return;
+      }
+
+      if (response.status === 400 || response.status === 409) {
+        const body: { code?: string; field?: string } = await response.json();
+        const field = fields.find(({ name }) => name === body.field)?.name;
+        if (
+          field &&
+          ((response.status === 400 && body.code === "INVALID_INPUT") ||
+            (response.status === 409 &&
+              ((field === "loginId" && body.code === "LOGIN_ID_ALREADY_USED") ||
+                (field === "nickname" &&
+                  body.code === "NICKNAME_ALREADY_USED"))))
+        ) {
+          setErrors((current) => ({
+            ...current,
+            [field]:
+              response.status === 409
+                ? "이미 사용 중입니다."
+                : "서버의 입력 규칙을 확인해 주세요.",
+          }));
+          return;
+        }
+      }
+      setSubmitError("가입 요청을 처리하지 못했습니다. 다시 시도해 주세요.");
+    } catch {
+      setSubmitError("서버에 연결하지 못했습니다. 잠시 뒤 다시 시도해 주세요.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -166,116 +218,142 @@ export function SignUpPage() {
           홈으로
         </Link>
         <h1 className="mt-8 text-3xl font-bold">회원가입</h1>
-        <p className="mt-3 text-slate-300">
-          입력 규칙에 맞게 작성해 주세요. 아이디와 닉네임은 각각 중복될 수
-          없습니다.
-        </p>
+        {complete ? (
+          <section className="mt-8 rounded-xl border border-emerald-400/40 bg-emerald-400/10 p-6">
+            <h2 className="text-xl font-semibold">회원가입이 완료되었습니다</h2>
+            <p className="mt-3 text-slate-200">계정이 만들어졌습니다.</p>
+          </section>
+        ) : (
+          <>
+            <p className="mt-3 text-slate-300">
+              입력 규칙에 맞게 작성해 주세요. 아이디와 닉네임은 각각 중복될 수
+              없습니다.
+            </p>
 
-        <form className="mt-8 space-y-5" noValidate onSubmit={handleSubmit}>
-          {fields.map(({ name, label, guide }) => {
-            const check =
-              name === "loginId"
-                ? loginIdCheck
-                : name === "nickname"
-                  ? nicknameCheck
-                  : null;
-            const availabilityMessage =
-              check?.result?.status === "checking"
-                ? "중복 확인 중입니다."
-                : check?.result?.status === "available"
-                  ? "사용할 수 있습니다."
-                  : check?.result?.status === "used"
-                    ? "이미 사용 중입니다."
-                    : check?.result?.status === "error"
-                      ? "중복 확인에 실패했습니다. 다시 입력하거나 나중에 시도해 주세요."
+            <form className="mt-8 space-y-5" noValidate onSubmit={handleSubmit}>
+              {fields.map(({ name, label, guide }) => {
+                const check =
+                  name === "loginId"
+                    ? loginIdCheck
+                    : name === "nickname"
+                      ? nicknameCheck
                       : null;
-            const invalid = !!errors[name] || check?.result?.status === "used";
+                const availabilityMessage =
+                  check?.result?.status === "checking"
+                    ? "중복 확인 중입니다."
+                    : check?.result?.status === "available"
+                      ? "사용할 수 있습니다."
+                      : check?.result?.status === "used"
+                        ? "이미 사용 중입니다."
+                        : check?.result?.status === "error"
+                          ? "중복 확인에 실패했습니다. 다시 입력하거나 나중에 시도해 주세요."
+                          : null;
+                const invalid =
+                  !!errors[name] || check?.result?.status === "used";
 
-            return (
-              <div key={name}>
-                <label className="block font-semibold" htmlFor={name}>
-                  {label}
-                </label>
-                <input
-                  aria-describedby={`${name}-help${errors[name] ? ` ${name}-error` : ""}${availabilityMessage ? ` ${name}-availability` : ""}`}
-                  aria-invalid={invalid}
-                  autoComplete={
-                    name === "password"
-                      ? "new-password"
-                      : name === "familyName"
-                        ? "family-name"
-                        : name === "givenName"
-                          ? "given-name"
-                          : name === "nickname"
-                            ? "nickname"
-                            : "username"
-                  }
-                  className="mt-2 block w-full rounded-lg border border-slate-600 bg-slate-900 px-4 py-3 text-white outline-none focus-visible:border-sky-300 focus-visible:ring-2 focus-visible:ring-sky-300/30 aria-invalid:border-rose-400"
-                  id={name}
-                  name={name}
-                  onBlur={() => {
-                    setErrors((current) => ({
-                      ...current,
-                      [name]: validateField(name, values[name]),
-                    }));
-                    check?.checkOnBlur();
-                  }}
-                  onChange={(event) => {
-                    setValues((current) => ({
-                      ...current,
-                      [name]: event.target.value,
-                    }));
-                    setErrors((current) => ({ ...current, [name]: null }));
-                    check?.resetUrgency();
-                  }}
-                  onCompositionEnd={() => {
-                    if (check) {
-                      setComposing((current) => ({
-                        ...current,
-                        [name]: false,
-                      }));
-                    }
-                  }}
-                  onCompositionStart={() => {
-                    if (check) {
-                      setComposing((current) => ({ ...current, [name]: true }));
-                    }
-                  }}
-                  type={name === "password" ? "password" : "text"}
-                  value={values[name]}
-                />
-                <p className="mt-2 text-sm text-slate-400" id={`${name}-help`}>
-                  {guide}
+                return (
+                  <div key={name}>
+                    <label className="block font-semibold" htmlFor={name}>
+                      {label}
+                    </label>
+                    <input
+                      aria-describedby={`${name}-help${errors[name] ? ` ${name}-error` : ""}${availabilityMessage && !errors[name] ? ` ${name}-availability` : ""}`}
+                      aria-invalid={invalid}
+                      autoComplete={
+                        name === "password"
+                          ? "new-password"
+                          : name === "familyName"
+                            ? "family-name"
+                            : name === "givenName"
+                              ? "given-name"
+                              : name === "nickname"
+                                ? "nickname"
+                                : "username"
+                      }
+                      className="mt-2 block w-full rounded-lg border border-slate-600 bg-slate-900 px-4 py-3 text-white outline-none focus-visible:border-sky-300 focus-visible:ring-2 focus-visible:ring-sky-300/30 aria-invalid:border-rose-400"
+                      id={name}
+                      name={name}
+                      disabled={submitting}
+                      onBlur={() => {
+                        setErrors((current) => ({
+                          ...current,
+                          [name]:
+                            validateField(name, values[name]) ?? current[name],
+                        }));
+                        check?.checkOnBlur();
+                      }}
+                      onChange={(event) => {
+                        setValues((current) => ({
+                          ...current,
+                          [name]: event.target.value,
+                        }));
+                        setErrors((current) => ({ ...current, [name]: null }));
+                        check?.resetUrgency();
+                      }}
+                      onCompositionEnd={() => {
+                        if (check) {
+                          setComposing((current) => ({
+                            ...current,
+                            [name]: false,
+                          }));
+                        }
+                      }}
+                      onCompositionStart={() => {
+                        if (check) {
+                          setComposing((current) => ({
+                            ...current,
+                            [name]: true,
+                          }));
+                        }
+                      }}
+                      type={name === "password" ? "password" : "text"}
+                      value={values[name]}
+                    />
+                    <p
+                      className="mt-2 text-sm text-slate-400"
+                      id={`${name}-help`}
+                    >
+                      {guide}
+                    </p>
+                    {errors[name] && (
+                      <p
+                        className="mt-1 text-sm text-rose-300"
+                        id={`${name}-error`}
+                        role="alert"
+                      >
+                        {errors[name]}
+                      </p>
+                    )}
+                    {availabilityMessage && !errors[name] && (
+                      <p
+                        className={`mt-1 text-sm ${check?.result?.status === "available" ? "text-emerald-300" : check?.result?.status === "used" ? "text-rose-300" : "text-slate-300"}`}
+                        id={`${name}-availability`}
+                        role={
+                          check?.result?.status === "used" ? "alert" : "status"
+                        }
+                      >
+                        {availabilityMessage}
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
+
+              <button
+                className="w-full rounded-lg bg-sky-300 px-5 py-3 font-semibold text-slate-950 transition hover:bg-sky-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-300 disabled:cursor-wait disabled:opacity-60"
+                disabled={submitting}
+                type="submit"
+              >
+                {submitting ? "가입 처리 중..." : "가입하기"}
+              </button>
+              {submitError && (
+                <p className="text-sm text-rose-300" role="alert">
+                  {submitError}
                 </p>
-                {errors[name] && (
-                  <p
-                    className="mt-1 text-sm text-rose-300"
-                    id={`${name}-error`}
-                    role="alert"
-                  >
-                    {errors[name]}
-                  </p>
-                )}
-                {availabilityMessage && (
-                  <p
-                    className={`mt-1 text-sm ${check?.result?.status === "available" ? "text-emerald-300" : check?.result?.status === "used" ? "text-rose-300" : "text-slate-300"}`}
-                    id={`${name}-availability`}
-                    role={check?.result?.status === "used" ? "alert" : "status"}
-                  >
-                    {availabilityMessage}
-                  </p>
-                )}
-              </div>
-            );
-          })}
-
-          <button
-            className="w-full rounded-lg bg-sky-300 px-5 py-3 font-semibold text-slate-950 transition hover:bg-sky-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-300"
-            type="submit"
-          >
-            가입하기
-          </button>
-        </form>
+              )}
+            </form>
+          </>
+        )}
       </div>
     </main>
   );
