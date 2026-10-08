@@ -46,7 +46,7 @@ GitHub Actions는 모든 pull request와 `main` branch push에서 다음 세 job
 - `Frontend`: 프런트엔드 변경 시 ESLint, Vitest와 production build
 - `Backend`: 백엔드 변경 시 Spotless와 테스트를 포함한 Gradle `check`
 
-문서만 변경한 PR에서는 Prettier만 실행합니다. 루트 npm 의존성 변경은 프런트엔드 변경으로, CI 설정 등 공통 파일 또는 분류되지 않은 파일 변경은 프런트엔드와 백엔드 변경으로 취급합니다. `main` push에서도 두 영역을 모두 검사합니다. 변경이 없는 영역의 job은 검사 대상만 확인하고 성공 상태를 보고하며, 변경 파일을 확인하지 못하면 실패합니다.
+문서만 변경한 PR에서는 `Formatting`만 실행하고 `Frontend`와 `Backend`는 runner 시작 전에 건너뜁니다. `Formatting`에서 변경 파일을 판별하며, 판별에 실패하면 해당 필수 검사가 실패합니다. 루트 npm 의존성 변경은 프런트엔드 변경으로, CI 설정 등 공통 파일 또는 분류되지 않은 파일 변경은 프런트엔드와 백엔드 변경으로 취급합니다. `main` push에서도 두 영역을 모두 검사합니다.
 
 CI는 로컬 편의 명령인 `npm run verify`를 호출하지 않습니다. 백엔드 테스트는 GitHub-hosted runner의 Docker에서 Testcontainers PostgreSQL을 실행하며 Compose 개발용 데이터베이스는 시작하지 않습니다.
 

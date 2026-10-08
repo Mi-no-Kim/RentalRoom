@@ -52,6 +52,7 @@
 - [로컬 전체 검증을 하나의 npm 명령으로 통합](2026-10-05-local-integrated-verification.md)
 - [영역별 CI 검사 구성](2026-10-05-ci-foundation.md)
 - [변경 영역에 따른 CI 검사 선택](2026-10-08-selective-ci-checks.md)
+- [CI job 단위 건너뜀](2026-10-08-ci-job-level-skip.md)
 - [예약 이력이 있는 회의실의 운영 종료](2026-10-06-room-retirement-and-reservation-history.md)
 - [로컬 PostgreSQL 미실행으로 백엔드 시작 실패](2026-10-07-local-postgresql-connection-refused.md)
 - [회원가입 고유성을 PostgreSQL에서 보장하기](2026-10-07-member-uniqueness-migration.md)
