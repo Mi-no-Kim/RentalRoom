@@ -43,8 +43,8 @@
 
 ## 남은 내용
 
-- CI를 구성할 때 `npm run format:check`를 별도 formatting job으로 실행한다.
-- 프런트엔드 linter는 역할과 규칙을 별도로 결정하고 formatter와 중복되는 규칙을 넣지 않는다.
+- 후속 완료: CI에서 `npm run format:check`를 별도 formatting job으로 실행한다. [관련 기록](2026-10-05-ci-foundation.md)
+- 후속 완료: 프런트엔드 linter의 역할과 규칙을 별도로 정했다. [관련 기록](2026-10-05-frontend-eslint.md)
 
 ## 연결
 

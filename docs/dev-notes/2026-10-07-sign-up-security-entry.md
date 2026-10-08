@@ -12,7 +12,8 @@
 ## 선택과 수정
 
 - 사용자가 `SecurityConfig.securityFilterChain`을 작성해 `POST /api/members`에 `permitAll`을 적용하고, `/api/members` 경로를 CSRF 검사에서 제외했다.
-- 다른 요청에는 `authenticated` 규칙을 두었다. 로그인 방식은 아직 결정하지 않았다.
+- 당시 다른 요청에는 `authenticated` 규칙을 두었다. 로그인 방식은 아직 결정하지 않았다.
+- 후속 w3에서 사전 중복 확인 `GET /api/members/availability`도 공개했다. 현재 이 `GET`과 가입 `POST` 외의 요청은 `authenticated` 규칙을 따른다. [관련 기록](2026-10-07-member-duplicate-response.md)
 
 ## 검증과 남은 내용
 

@@ -43,7 +43,7 @@
 
 ## 남은 내용
 
-- DB 통합 테스트에 Testcontainers PostgreSQL을 적용하고 Compose DB 없이 테스트가 통과하는지 검증해야 한다.
+- 후속 완료: Compose DB 없이 Testcontainers PostgreSQL 테스트를 통과시켰다. [관련 기록](2026-10-05-testcontainers-postgresql.md)
 - 운영 환경의 비밀값 관리와 PostgreSQL 배포 방식은 현재 범위가 아니다.
 - PostgreSQL major version을 올릴 때는 기존 volume을 그대로 재사용하지 않고 별도 upgrade 또는 백업·복원 절차가 필요하다.
 
