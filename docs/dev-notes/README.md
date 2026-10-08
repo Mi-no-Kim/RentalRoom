@@ -58,3 +58,5 @@
 - [회원가입 중복을 DB 제약에서 판정하고 API 오류로 변환하기](2026-10-07-member-duplicate-response.md)
 - [회원가입 요청이 기본 보안 설정에서 차단됨](2026-10-07-sign-up-security-entry.md)
 - [회원가입 화면의 입력 검사와 사전 중복 확인](2026-10-08-sign-up-input-and-availability.md)
+- [회원 로그인 상태를 서버 세션으로 관리하기로 선택](2026-10-08-member-session-auth-choice.md)
+- [세션 로그인 요청의 CSRF 토큰을 조회 API와 헤더로 전달하기](2026-10-08-session-csrf-token-delivery.md)
