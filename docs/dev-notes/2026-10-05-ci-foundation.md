@@ -1,6 +1,6 @@
 # 영역별 CI 검사 구성
 
-- **상태:** 로컬·원격 검증 완료, 대상 Ruleset 연결 확인
+- **상태:** 초기 구성의 로컬·원격 검증 완료, 대상 Ruleset 연결 확인. 현재 선택 실행 방식은 [후속 노트](2026-10-08-selective-ci-checks.md)에 기록
 - **발견일:** 2026-10-05
 - **관련 기능:** GitHub Actions 품질 검사
 
@@ -12,7 +12,7 @@
 
 ## 관찰
 
-- formatting 검사는 Prettier뿐 아니라 backend Spotless도 호출하므로 Node.js와 Java가 모두 필요하다.
+- 초기 formatting 검사는 Prettier뿐 아니라 backend Spotless도 호출했으므로 Node.js와 Java가 모두 필요했다.
 - frontend 검사는 npm 의존성을 설치한 뒤 lint, test와 production build를 실행해야 한다.
 - backend `check`는 formatting과 테스트를 함께 검증하고 Testcontainers가 임시 PostgreSQL을 시작한다.
 - `backend/gradlew`에 실행 권한이 없으면 Linux runner에서 Wrapper를 직접 실행할 수 없다.
@@ -27,7 +27,7 @@
 
 - pull request와 `main` branch push에서 실행되는 `.github/workflows/ci.yml`을 추가했다.
 - CI job 이름을 Ruleset에서 그대로 사용할 수 있도록 `Formatting`, `Frontend`, `Backend`로 고정했다.
-- `Formatting`은 Node.js 24와 Java 21에서 `npm run format:check`를 실행한다.
+- 초기 `Formatting`은 Node.js 24와 Java 21에서 `npm run format:check`를 실행했다.
 - `Frontend`는 Node.js 24에서 npm clean install 후 lint, test와 production build를 실행한다.
 - `Backend`는 Temurin Java 21에서 Gradle `check`를 실행한다.
 - npm과 Gradle 의존성은 공식 setup action의 cache 기능을 사용한다.

@@ -1,4 +1,5 @@
 import { Link, Route, Routes } from "react-router";
+import { SignUpPage } from "./SignUpPage";
 
 const foundations = [
   {
@@ -25,6 +26,7 @@ export function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/sign-up" element={<SignUpPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
@@ -69,9 +71,12 @@ function HomePage() {
           ))}
         </section>
 
-        <p className="mt-10 text-sm text-slate-500">
-          다음 단계는 Spring API 계약에 맞춘 첫 사용자 흐름입니다.
-        </p>
+        <Link
+          className="mt-10 inline-flex rounded-lg bg-sky-300 px-5 py-3 font-semibold text-slate-950 transition hover:bg-sky-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-300"
+          to="/sign-up"
+        >
+          회원가입
+        </Link>
       </main>
     </div>
   );

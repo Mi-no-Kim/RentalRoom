@@ -29,7 +29,7 @@
 - React, TypeScript, Vite와 React Router로 SPA 실행 기반과 기본 404 경로를 구성했다.
 - Tailwind CSS를 기본 styling으로 사용하고 CSS Modules는 초기 구성에서 제외했다.
 - TanStack Query는 native `fetch` 위에서 서버 상태만 관리하도록 두고 초기에는 query와 mutation의 자동 재시도, 창 focus 재조회를 껐다.
-- optimistic update는 사용하지 않고 실제 기능에서는 쓰기 성공 후 관련 query를 invalidate해 서버 상태를 다시 확인한다.
+- optimistic update는 초기 구성에 도입하지 않았다. query를 사용하는 후속 화면의 쓰기 성공 후 재조회 방식은 해당 기능에서 결정한다.
 - Vitest와 React Testing Library를 구성하고 테스트마다 `cleanup()`을 명시해 DOM을 격리했다.
 - linter를 임의로 선택하지 않기 위해 Vite template 전체 대신 확정된 실행·테스트 파일만 추가했다.
 
@@ -43,8 +43,8 @@
 
 ## 남은 내용
 
-- 실제 Spring API가 정해지면 HTTP 상태와 오류 본문을 보존하는 공통 `fetch` 경계를 추가한다.
-- 프런트엔드 linter와 구체적인 규칙은 별도 결정이 필요하다.
+- 후속 회원가입 화면에서는 `GET`·`POST`를 페이지에서 직접 호출하고 HTTP 상태와 오류 본문을 처리한다. 여러 화면에서 같은 요청 처리가 반복되면 공통 `fetch` 경계를 검토한다. [관련 기록](2026-10-08-sign-up-input-and-availability.md)
+- 후속 완료: 프런트엔드 linter와 규칙을 별도로 정했다. [관련 기록](2026-10-05-frontend-eslint.md)
 - caching, 선택적 retry와 optimistic update는 기본 CRUD 흐름을 확인한 뒤 필요성을 검토한다.
 
 ## 연결

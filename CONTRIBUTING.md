@@ -282,6 +282,8 @@ feat(be): 예약 종료 시간 검증 추가
 
 ### Commit 단위
 
+- 각 Work를 시작하기 전에 검증 가능한 내부 단계와 단계별 commit 경계를 정한다. 진행 중 확인한 사실에 따라 다음 단계 계획은 조정할 수 있다.
+- 한 단계의 검증이 끝나면 그 단계의 변경만 commit한 뒤 다음 단계로 넘어간다.
 - commit 하나에는 하나의 논리적 변화만 담는다.
 - 구현과 그 동작을 직접 검증하는 테스트는 같은 commit에 포함한다.
 - 목적이 다른 리팩터링, 문서, 설정 변경은 별도 commit으로 분리하거나 현재 Work에서 제외한다.
@@ -303,7 +305,7 @@ feat(be): 예약 종료 시간 검증 추가
 - commit 또는 PR 준비 전 저장소 루트에서 `npm run verify`로 전체 로컬 검증을 실행할 수 있다.
 - `verify`는 formatting 검사, frontend lint·test·build, backend Gradle `check`를 순서대로 실행하고 실패한 단계에서 중단한다.
 - backend 테스트가 실행되려면 Testcontainers를 위한 Docker Desktop이 필요하다.
-- `verify`는 로컬 편의 명령이며 CI workflow에서는 사용하지 않는다. CI는 formatting, frontend와 backend를 별도 job으로 실행한다.
+- `verify`는 로컬 편의 명령이며 CI workflow에서는 사용하지 않는다. CI는 formatting, frontend와 backend를 별도 job으로 보고하되 Prettier는 항상 실행하고 frontend·backend의 실제 검사는 변경 영역에 따라 실행한다. backend `check`에 Spotless가 포함된다.
 
 ## PR 공통 체크리스트
 
@@ -463,7 +465,7 @@ Milestone의 목표·완료 조건 원문과 Issue별 배경·구현 내용·Wor
 - 리뷰 대화를 모두 해결해야 병합할 수 있다.
 - PR merge 방식은 merge commit만 허용한다.
 - force push와 브랜치 삭제를 차단한다.
-- CI를 구성한 뒤 필수 검사와 최신 base 반영 조건을 추가한다.
+- `Formatting`, `Frontend`, `Backend`를 필수 검사로 요구하고 최신 base 반영 조건을 적용한다.
 
 ### `protect-integration-branches`
 
@@ -476,7 +478,7 @@ Milestone의 목표·완료 조건 원문과 Issue별 배경·구현 내용·Wor
 - Phase와 Issue 브랜치를 함께 대상으로 하므로 merge commit과 squash merge를 허용하고 실제 방식은 브랜치·병합 표를 따른다.
 - force push를 차단한다.
 - 병합 후 브랜치를 삭제해야 하므로 브랜치 삭제는 허용한다.
-- CI를 구성한 뒤 필수 검사와 최신 base 반영 조건을 추가한다.
+- `Formatting`, `Frontend`, `Backend`를 필수 검사로 요구하고 최신 base 반영 조건을 적용한다.
 
 ### `protect-work-branches`
 
@@ -491,6 +493,5 @@ Milestone의 목표·완료 조건 원문과 Issue별 배경·구현 내용·Wor
 - Issue와 Phase에 merge commit이 필요하므로 linear history를 요구하지 않는다.
 - 현재 1인 저장소이므로 승인 1명을 요구하지 않는다.
 - commit message는 merge commit 예외와 squash 흐름을 고려해 Rules로 강제하지 않는다.
-- 필수 CI 검사는 실제 workflow를 만든 뒤 추가한다.
 
 저장소에서는 squash merge와 merge commit을 허용하고 rebase merge는 비활성화한다. 병합 결과를 검증한 뒤 브랜치를 삭제하기 위해 자동 브랜치 삭제는 비활성화한다.

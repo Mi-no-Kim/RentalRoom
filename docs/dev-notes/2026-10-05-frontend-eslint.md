@@ -44,7 +44,7 @@
 ## 남은 내용
 
 - 실제 코드에서 타입 정보가 필요한 문제가 반복되면 `recommended-type-checked` 도입 비용과 효과를 다시 검토한다.
-- CI의 frontend job에서 lint, test와 build를 각각 실행한다.
+- 후속 완료: CI의 frontend job에서 lint, test와 build를 각각 실행한다. [관련 기록](2026-10-05-ci-foundation.md)
 - TypeScript 7은 typescript-eslint가 공식 지원한 뒤 별도 dependency update로 검토한다.
 
 ## 연결

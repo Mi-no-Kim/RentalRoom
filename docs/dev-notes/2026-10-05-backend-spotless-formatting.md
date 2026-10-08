@@ -48,9 +48,8 @@
 
 ## 남은 내용
 
-- 저장소 Markdown, YAML, JSON과 향후 프런트엔드 파일을 담당할 루트 Prettier 설정은 별도 작업이다.
-- 루트 formatting 통합 명령은 루트 Node package를 구성할 때 추가한다.
-- CI의 formatting job은 CI 기반을 구성할 때 연결한다.
+- 후속 완료: 루트 Prettier 설정과 formatting 통합 명령을 추가했다. [관련 기록](2026-10-05-repository-formatting.md)
+- 후속 변경: 초기 CI formatting job에서 Spotless를 실행했다. 현재는 백엔드 변경 시 Backend job의 Gradle `check`에서 검사한다. [초기 구성](2026-10-05-ci-foundation.md), [현재 구성](2026-10-08-selective-ci-checks.md)
 
 ## 근거
 
