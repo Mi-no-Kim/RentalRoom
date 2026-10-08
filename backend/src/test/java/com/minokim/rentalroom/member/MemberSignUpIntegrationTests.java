@@ -1,6 +1,7 @@
 package com.minokim.rentalroom.member;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -196,5 +197,143 @@ public class MemberSignUpIntegrationTests {
         // then
         action.andExpect(status().isCreated());
         assertThat(memberRepository.count()).isEqualTo(2);
+    }
+
+    @Test
+    void availabilityReturnsTrueForUnusedLoginIdWithoutAuthentication() throws Exception {
+        // given
+        String loginId1 = "rental01";
+
+        // when
+        ResultActions action = mockMvc.perform(
+                get("/api/members/availability").param("field", "loginId").param("value", loginId1));
+
+        // then
+        action.andExpect(status().isOk()).andExpect(jsonPath("$.available").value(true));
+    }
+
+    @Test
+    void availabilityReturnsFalseForExistingLoginId() throws Exception {
+        // given
+        String loginId1 = "rental01";
+        String password1 = "Abcdef12!";
+        String familyName1 = "김";
+        String givenName1 = "민수";
+        String nickname1 = "민수_a";
+        postSignUp(loginId1, password1, familyName1, givenName1, nickname1).andExpect(status().isCreated());
+
+        // when
+        ResultActions action = mockMvc.perform(
+                get("/api/members/availability").param("field", "loginId").param("value", loginId1));
+
+        // then
+        action.andExpect(status().isOk()).andExpect(jsonPath("$.available").value(false));
+    }
+
+    @Test
+    void availabilityReturnsTrueForUnusedNickname() throws Exception {
+        // given
+        String nickname1 = "민수_a";
+
+        // when
+        ResultActions action = mockMvc.perform(
+                get("/api/members/availability").param("field", "nickname").param("value", nickname1));
+
+        // then
+        action.andExpect(status().isOk()).andExpect(jsonPath("$.available").value(true));
+    }
+
+    @Test
+    void availabilityReturnsFalseForNicknameIgnoringCase() throws Exception {
+        // given
+        String loginId1 = "rental01";
+        String password1 = "Abcdef12!";
+        String familyName1 = "김";
+        String givenName1 = "민수";
+        String nickname1 = "민수_a";
+        String nickname2 = "민수_A";
+        postSignUp(loginId1, password1, familyName1, givenName1, nickname1).andExpect(status().isCreated());
+
+        // when
+        ResultActions action = mockMvc.perform(
+                get("/api/members/availability").param("field", "nickname").param("value", nickname2));
+
+        // then
+        action.andExpect(status().isOk()).andExpect(jsonPath("$.available").value(false));
+    }
+
+    @Test
+    void availabilityRejectsInvalidLoginId() throws Exception {
+        // given
+        String loginId1 = "Rental01";
+
+        // when
+        ResultActions action = mockMvc.perform(
+                get("/api/members/availability").param("field", "loginId").param("value", loginId1));
+
+        // then
+        action.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.field").value("loginId"))
+                .andExpect(jsonPath("$.code").value("INVALID_INPUT"));
+    }
+
+    @Test
+    void availabilityRejectsInvalidNickname() throws Exception {
+        // given
+        String nickname1 = "잘못된 닉네임";
+
+        // when
+        ResultActions action = mockMvc.perform(
+                get("/api/members/availability").param("field", "nickname").param("value", nickname1));
+
+        // then
+        action.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.field").value("nickname"))
+                .andExpect(jsonPath("$.code").value("INVALID_INPUT"));
+    }
+
+    @Test
+    void availabilityRejectsMissingValue() throws Exception {
+        // given
+        String loginId1 = "rental01";
+
+        // when
+        ResultActions action = mockMvc.perform(get("/api/members/availability").param("field", "loginId"));
+
+        // then
+        action.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.field").value("loginId"))
+                .andExpect(jsonPath("$.code").value("INVALID_INPUT"));
+    }
+
+    @Test
+    void availabilityRejectsMissingField() throws Exception {
+        // given
+        String loginId1 = "rental01";
+
+        // when
+        ResultActions action = mockMvc.perform(get("/api/members/availability").param("value", loginId1));
+
+        // then
+        action.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.field").value("field"))
+                .andExpect(jsonPath("$.code").value("INVALID_INPUT"));
+    }
+
+    @Test
+    void availabilityRejectsUnsupportedField() throws Exception {
+        // given
+        String loginId1 = "rental01";
+        String nickname1 = "잘못된 닉네임1";
+
+        // when
+        ResultActions action = mockMvc.perform(get("/api/members/availability")
+                .param("field", "unsupportedField")
+                .param("value", loginId1));
+
+        // then
+        action.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.field").value("field"))
+                .andExpect(jsonPath("$.code").value("INVALID_INPUT"));
     }
 }

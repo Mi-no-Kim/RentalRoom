@@ -13,6 +13,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/api/members")
                 .permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/members/availability")
+                .permitAll()
                 .anyRequest()
                 .authenticated());
         http.csrf(csrf -> csrf.ignoringRequestMatchers("/api/members"));
